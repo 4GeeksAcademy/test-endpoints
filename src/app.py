@@ -9,10 +9,13 @@ from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
 from models import db, User
+from routes import api
 #from models import Person
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+
+app.register_blueprint(api, url_prefix='/api')
 
 db_url = os.getenv("DATABASE_URL")
 if db_url is not None:
@@ -36,12 +39,7 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
-@app.route('/user', methods=['GET'])
-def handle_hello():
 
-    response_body = {
-        "msg": "Hello, this is your GET /user response "
-    }
 
     return jsonify(response_body), 200
 
